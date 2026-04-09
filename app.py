@@ -40,6 +40,13 @@ def add_movies(user_id):
 
     #Daten von der API holen
     movie_data = get_data_from_api(movie)
+    if movie_data is None:
+        return render_template('404.html', user_id=user_id), 404
+
+    #Prüft ob der Film bereits in der Datenbank ist
+    if data_manager.movie_exists(user_id, movie_data['Title']) == True:
+        return redirect(url_for('get_movies', user_id=user_id)), 302
+
     #Aus diesen Daten ein Movieobjekt erstellen
     movie_to_add = create_movie_object(movie_data)
 
@@ -64,9 +71,8 @@ def get_data_from_api(movie_title):
         data = response.json()
         if data['Response'] == 'True':
             return data
-        return None
-
-
+        return None #Film nicht gefunden
+    return None #HTTP fehler
 
 def create_movie_object(data):
     """Hilfsfunktion für add_movie um die Daten in ein MovieObjekt umzuwandeln"""
@@ -91,8 +97,9 @@ def update_movie(user_id, movie_id):
 
         return redirect(url_for('get_movies', user_id=user_id)), 302
 
-
-
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     with app.app_context():

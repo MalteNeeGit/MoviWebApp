@@ -53,3 +53,15 @@ class DataManager():
         .filter(Movie.id == movie_id).one()
 
         return specific_movie
+
+    def movie_exists(self, user_id , movie_title):
+        """Checks if movie is already existing"""
+        movie_to_check = db.session.query(Movie)\
+        .filter(Movie.name == movie_title).first()
+
+        user = self.get_single_user(user_id)
+
+        if movie_to_check in user.movies:
+            return True
+        else:
+            return False
