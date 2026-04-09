@@ -40,3 +40,9 @@ class DataManager():
         .filter(Movie.id == movie_id).delete()
         db.session.commit()
 
+    def get_single_user(self,user_id):
+        """Catches a single user from the db by id"""
+        single_user = db.session.query(User)\
+        .filter(User.id == user_id).one()
+
+        return single_user

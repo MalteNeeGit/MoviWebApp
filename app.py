@@ -1,7 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for
 from data_manager import DataManager
 from models import db, Movie
 import os
+import requests
+#Verstecken API KEY-holen
+from dotenv import load_dotenv
+load_dotenv()
 
 
 app = Flask(__name__)
@@ -14,13 +18,58 @@ db.init_app(app)  # Link the database and the app. This is the reason you need t
 
 data_manager = DataManager() # Create an object of your DataManager class
 
-@app.route('/')
+@app.route('/', methods = ["GET"])
 def home():
-    return "Welcome to MoviWeb App!"
+    users = data_manager.get_users()
+    return render_template('index.html', users=users), 200
 
+@app.route('/users', methods=["POST"])
+def create_user():
+    user = request.form.get("name")
+    data_manager.create_user(user)
+    return redirect(url_for('home')), 302
+
+@app.route('/users/<int:user_id>/movies', methods=["GET"])
+def get_movies(user_id):
+    movies = data_manager.get_movies(user_id)
+    return render_template('movies.html', movies=movies, user_id=user_id)
+
+@app.route('/users/<int:user_id>/movies', methods=["POST"])
+def add_movies(user_id):
+    movie = request.form.get("movie")
+
+    #Daten von der API holen
+    movie_data = get_data_from_api(movie)
+    #Aus diesen Daten ein Movieobjekt erstellen
+    movie_to_add = create_movie_object(movie_data)
+
+    #Film zur Datenbbank hinzufügen
+    data_manager.add_movie(movie_to_add)
+    # Film mit dem User verlinken
+    user = data_manager.get_single_user(user_id)
+    user.movies.append(movie_to_add)
+
+    db.session.commit()
+
+    return redirect(url_for('get_movies', user_id=user_id)), 302
+
+
+def get_data_from_api(movie_title):
+    """Hilfsfunktion für add_movie um die Daten von der Api zu holen"""
+    api_key = os.getenv('OMDB_API_KEY')
+    adress = f"http://www.omdbapi.com/?apikey={api_key}&t={movie_title}"
+    response = requests.get(adress)
+    data = response.json()
+    return data
+
+def create_movie_object(data):
+    """Hilfsfunktion für add_movie um die Daten in ein MovieObbjekt umzuwandeln"""
+    new_movie_object = Movie(name=data['Title'], director=data['Director'], year=data['Year'], poster_url=data['Poster'])
+    return new_movie_object
 
 if __name__ == '__main__':
-  with app.app_context():
-    db.create_all()
+    with app.app_context():
+        db.create_all()
 
-  app.run()
+    app.run(debug=True)
+

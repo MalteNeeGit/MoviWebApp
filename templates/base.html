@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- Das macht base.html zu einem basistemplate-->
+    <main class="container">
+            {% block content %}
+            {% endblock %}
+    </main>
+
+</body>
+</html>
