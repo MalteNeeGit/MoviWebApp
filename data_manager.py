@@ -46,3 +46,10 @@ class DataManager():
         .filter(User.id == user_id).one()
 
         return single_user
+
+    def get_specific_movie(self, movie_id):
+        """Gets a specific movie for the update operation"""
+        specific_movie = db.session.query(Movie)\
+        .filter(Movie.id == movie_id).one()
+
+        return specific_movie

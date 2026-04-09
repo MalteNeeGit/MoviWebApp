@@ -53,19 +53,46 @@ def add_movies(user_id):
 
     return redirect(url_for('get_movies', user_id=user_id)), 302
 
-
 def get_data_from_api(movie_title):
     """Hilfsfunktion für add_movie um die Daten von der Api zu holen"""
     api_key = os.getenv('OMDB_API_KEY')
-    adress = f"http://www.omdbapi.com/?apikey={api_key}&t={movie_title}"
-    response = requests.get(adress)
-    data = response.json()
-    return data
+    address = f"http://www.omdbapi.com/?apikey={api_key}&t={movie_title}"
+    #Antwort von API holen
+    response = requests.get(address)
+    if response.ok:
+        #Antwort in json umwandeln
+        data = response.json()
+        if data['Response'] == 'True':
+            return data
+        return None
+
+
 
 def create_movie_object(data):
-    """Hilfsfunktion für add_movie um die Daten in ein MovieObbjekt umzuwandeln"""
+    """Hilfsfunktion für add_movie um die Daten in ein MovieObjekt umzuwandeln"""
     new_movie_object = Movie(name=data['Title'], director=data['Director'], year=data['Year'], poster_url=data['Poster'])
     return new_movie_object
+
+@app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
+def delete_movie(movie_id, user_id):
+    data_manager.delete_movie(movie_id)
+
+    return redirect(url_for('get_movies', user_id=user_id)), 302
+
+@app.route('/users/<int:user_id>/movies/<int:movie_id>/update', methods=['GET', 'POST'])
+def update_movie(user_id, movie_id):
+    if request.method == "GET":
+        movie = data_manager.get_specific_movie(movie_id)
+        return render_template('update_movie.html', movie=movie, user_id=user_id, movie_id=movie_id)
+
+    if request.method == "POST":
+        new_title = request.form.get("title")
+        data_manager.update_movie(movie_id, new_title)
+
+        return redirect(url_for('get_movies', user_id=user_id)), 302
+
+
+
 
 if __name__ == '__main__':
     with app.app_context():
