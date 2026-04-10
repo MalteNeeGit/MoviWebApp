@@ -1,23 +1,30 @@
 
     {% extends "base.html" %}
     {% block content %}
-    <h1>Filme</h1>
-    <ul>
+    <h1>Deine Lieblings-Filme</h1>
+        <form action="{{ url_for('add_movies', user_id=user_id) }}" method="POST">
+            <input type="text" name="movie" placeholder="Hier Titel eingeben..." required>
+            <button type="submit" class="btn-add">
+                <i class="fa-solid fa-plus"> </i>&nbsp;&nbsp;Film hinzufügen</button>
+        </form>
+    <div class="movies-grid">
         {% for movie in movies %}
-        <li>{{ movie.name }} - {{ movie.director }} - {{ movie.year }}</li>
-        <img src="{{ movie.poster_url }}" alt="Plakat von {{ movie.name }}" height="200">
+        <div class="movie-card">
+        <img src="{{ movie.poster_url }}" alt="Plakat von {{ movie.name }}">
+            <div class="movie-info">
+                <h3>{{ movie.name }}</h3>
+                <p>{{ movie.director }}</p>
+                <p>{{ movie.year }}</p>
+            </div>
         <div class="button-group">
             <form action="{{ url_for('update_movie', user_id=user_id, movie_id=movie.id) }}" method="GET">
-                <button type="submit">Diesen Film updaten</button>
+                <button type="submit" class="btn-update">Film updaten</button>
             </form>
             <form action="{{ url_for('delete_movie', user_id=user_id, movie_id=movie.id) }}" method="POST">
-                <button type="submit">Diesen Film löschen</button>
+                <button type="submit" class="btn-delete">Film löschen</button>
             </form>
+            </div>
         </div>
         {% endfor %}
-    </ul>
-        <form action="{{ url_for('add_movies', user_id=user_id) }}" method="POST">
-        <input type="text" name="movie">
-        <button type="submit">Film hinzufügen</button>
-    </form>
+    </div>
     {% endblock %}

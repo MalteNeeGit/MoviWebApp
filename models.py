@@ -1,9 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 
-#Datenbankobjekt
+# Datenbankobjekt zum einfachen bedienen
 db = SQLAlchemy()
 
-#zwischentabelle für many-to-many-beziehungen
+# Zwischentabelle für many-to-many-beziehungen
 user_movies = db.Table('user_movies',
                        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                        db.Column('movie_id', db.Integer,db.ForeignKey('movie.id'))

@@ -2,10 +2,19 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MoviWeb</title>
 </head>
 <body>
+    <nav>
+        <a href="{{ url_for('home') }}" class="nav-logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="MovieWeb Logo">
+        </a>
+        <a href="{{ url_for('home') }}" class="nav-link">← Alle Nutzer</a>
+    </nav>
     <!-- Das macht base.html zu einem basistemplate-->
     <main class="container">
             {% block content %}

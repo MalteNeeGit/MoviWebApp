@@ -1,0 +1,140 @@
+body {
+    background-color: #141414;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+nav img {
+    height: 100px;
+   padding: 10px;
+}
+
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px
+}
+
+.movie-card {
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.movie-card img {
+   width: 100%;
+   object-fit: cover;
+   border-radius: 8px 8px 0 0;
+}
+
+.movie-info {
+    padding: 10px;
+}
+
+.movie-info h3 {
+    font-size: 20x;
+    color: white;
+    margin: 0;
+}
+
+.movie-info p {
+    font-size: 15px;
+    color: #aaaaaa;
+    margin: 4px 0;
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+.button-group {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+}
+
+.btn-update {
+    background-color: #555;
+    color: white;
+    box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
+    border: 1px solid transparent;
+}
+
+.btn-update:hover {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-delete {
+    background-color: #E50914;
+    color: white;
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+    border: 1px solid transparent;
+}
+
+.btn-delete:hover {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.btn-add {
+    transition: box-shadow 0.2s ease;
+}
+
+.btn-add:hover {
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.8);
+}
+
+input[type="text"] {
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #1f1f1f;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.container {
+    padding-left: 40px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0a0a0a;
+    padding-left: 40px;
+    border-bottom: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+}
+
+.nav-link {
+    color: #aaaaaa;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    padding-right: 40px;
+}
+
+.nav-link:hover {
+    color: white;
+    transition: color 0.2s ease;
+}
