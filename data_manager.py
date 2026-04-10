@@ -1,3 +1,4 @@
+from sqlalchemy.exc import NoResultFound
 from models import db, User, Movie
 
 class DataManager():
@@ -16,8 +17,11 @@ class DataManager():
 
     def get_movies(self, user_id):
         """Gets the movies from a particular user and returns the Movies as a list"""
-        user = db.session.query(User)\
-        .filter(User.id == user_id).one()
+        try:
+            user = db.session.query(User)\
+            .filter(User.id == user_id).one()
+        except NoResultFound:
+            return None
 
         return user.movies
 
@@ -28,8 +32,11 @@ class DataManager():
 
     def update_movie(self, movie_id, new_title):
         """Updates the title of a Movie"""
-        movie_to_update = db.session.query(Movie)\
-        .filter(Movie.id == movie_id).one()
+        try:
+            movie_to_update = db.session.query(Movie)\
+            .filter(Movie.id == movie_id).one()
+        except NoResultFound:
+            return None
 
         movie_to_update.name = new_title
         db.session.commit()
@@ -42,15 +49,21 @@ class DataManager():
 
     def get_single_user(self,user_id):
         """Catches a single user from the db by id"""
-        single_user = db.session.query(User)\
-        .filter(User.id == user_id).one()
+        try:
+            single_user = db.session.query(User)\
+            .filter(User.id == user_id).one()
+        except NoResultFound:
+            return None
 
         return single_user
 
     def get_specific_movie(self, movie_id):
         """Gets a specific movie for the update operation"""
-        specific_movie = db.session.query(Movie)\
-        .filter(Movie.id == movie_id).one()
+        try:
+            specific_movie = db.session.query(Movie)\
+            .filter(Movie.id == movie_id).one()
+        except NoResultFound:
+            return None
 
         return specific_movie
 
@@ -61,7 +74,19 @@ class DataManager():
 
         user = self.get_single_user(user_id)
 
-        if movie_to_check in user.movies:
-            return True
+        #Errorhandling
+        if user is not None:
+
+            if movie_to_check in user.movies:
+                return True
+            else:
+                return False
+
         else:
-            return False
+            return None
+
+    def delete_user(self, user_id):
+        """Deletes a movie from a database"""
+        db.session.query(User)\
+        .filter(User.id == user_id).delete()
+        db.session.commit()
