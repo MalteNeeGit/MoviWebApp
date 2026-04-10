@@ -1,19 +1,31 @@
 
     {% extends "base.html" %}
     {% block content %}
+    <div class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Willkommen bei MoviWeb</h1>
+            <p>Deine persöhnliche Filmsammlung</p>
+        </div>
+    </div>
     <h1>Nutzer</h1>
-    <ul class="user-list">
-        {% for user in users %}
-        <li class="user-entry">
-            <a href="{{ url_for('get_movies', user_id=user.id) }}" class="btn">{{ user.name }}</a>
-        </li>
-        <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST">
-            <button type="submit">Diesen Nutzer löschen</button>
-        </form>
-        {% endfor %}
-    </ul>
-    <form action="{{ url_for('create_user') }}" method="POST">
-        <input type="text" name="name">
+        <form action="{{ url_for('create_user') }}" method="POST">
+        <input type="text" name="name" placeholder="Neuer Nutzer..." required>
         <button type="submit">Nutzer hinzufügen</button>
     </form>
+    <div class="user-list">
+        {% for user in users %}
+        <div class="user-entry">
+            <a href="{{ url_for('get_movies', user_id=user.id) }}" class="btn">
+            <div class="user-avatar">{{ user.name[0] }}</div>
+            </a>
+            <a href="{{ url_for('get_movies', user_id=user.id) }}" class="btn">{{ user.name }}</a>
+
+            <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST">
+                <button type="submit">Diesen Nutzer löschen</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
     {% endblock %}
