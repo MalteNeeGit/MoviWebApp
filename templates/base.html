@@ -10,15 +10,25 @@
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('home') }}" class="nav-logo">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="MovieWeb Logo">
-        </a>
-        <a href="{{ url_for('home') }}" class="nav-link">← Alle Nutzer</a>
-    </nav>
+    <a href="{{ url_for('home') }}" class="nav-logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="MovieWeb Logo">
+    </a>
+    <div class="nav-center">
+        {% block nav_extra %}{% endblock %}
+    </div>
+    <a href="{{ url_for('home') }}" class="nav-link">← Alle Nutzer</a>
+</nav>
     <!-- Das macht base.html zu einem basistemplate-->
     <main class="container">
-            {% block content %}
-            {% endblock %}
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+    {% block content %}
+    {% endblock %}
     </main>
 
 </body>

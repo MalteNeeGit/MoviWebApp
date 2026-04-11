@@ -1,7 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from data_manager import DataManager
 from models import db, Movie
 
@@ -10,6 +10,9 @@ load_dotenv()
 
 # Flask App initialisieren
 app = Flask(__name__)
+
+#Secret key für Flash Nachrichten
+app.secret_key = os.getenv('SECRET_KEY')
 
 # Datenbankpfad erstellen
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -64,7 +67,8 @@ def add_movies(user_id):
     # Daten von der API holen, abbrechen wenn Film nicht gefunden
     movie_data = get_data_from_api(movie)
     if movie_data is None:
-        return render_template('404.html', user_id=user_id), 404
+        flash("Dieser Film wurde nicht gefunden!")
+        return redirect(url_for('get_movies', user_id=user_id))
 
     # Film nicht doppelt hinzufügen
     if data_manager.movie_exists(user_id, movie_data['Title']):
@@ -157,4 +161,4 @@ def internal_server_error(_e):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(debug=False)

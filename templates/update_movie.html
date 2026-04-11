@@ -1,8 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-    <!-- Formular hier -->
+<div class="update-page">
+    <div class="update-card">
+        <img src="{{ movie.poster_url }}" alt="{{ movie.name }}">
+        <div class="update-info">
+            <h3>{{ movie.name }}</h3>
+            <p>{{ movie.director }}</p>
+            <p>{{ movie.year }}</p>
+        </div>
+    </div>
+
+    <h2>Titel bearbeiten</h2>
+
     <form action="{{ url_for('update_movie', user_id=user_id, movie_id=movie_id) }}" method="POST">
         <input type="text" name="title" value="{{ movie.name }}">
-        <button type="submit">Titel ändern</button>
+        <button type="submit" class="btn-update">Titel speichern</button>
     </form>
+
+    <a href="{{ url_for('get_movies', user_id=user_id) }}" class="update-back">← Zurück zu deinen Filmen</a>
+</div>
 {% endblock %}

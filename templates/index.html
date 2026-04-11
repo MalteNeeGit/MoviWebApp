@@ -1,31 +1,40 @@
+{% extends "base.html" %}
 
-    {% extends "base.html" %}
-    {% block content %}
-    <div class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>Willkommen bei MoviWeb</h1>
-            <p>Deine persöhnliche Filmsammlung</p>
-        </div>
+{% block nav_extra %}
+<form action="{{ url_for('create_user') }}" method="POST" style="margin:0;">
+    <input type="text" name="name" placeholder="Neuer Nutzer..." required>
+    <button type="submit" class="nav-btn"><i class="fa-solid fa-plus"></i></button>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Willkommen bei MoviWeb</h1>
+        <h3>Deine persöhnliche Filmsammlung</h3>
+        <p>Entdecke die magische Welt der Filme</p>
     </div>
+</div>
+<div class="users-section">
     <h1>Nutzer</h1>
-        <form action="{{ url_for('create_user') }}" method="POST">
-        <input type="text" name="name" placeholder="Neuer Nutzer..." required>
-        <button type="submit">Nutzer hinzufügen</button>
-    </form>
     <div class="user-list">
+    {% if users %}
         {% for user in users %}
         <div class="user-entry">
-            <a href="{{ url_for('get_movies', user_id=user.id) }}" class="btn">
-            <div class="user-avatar">{{ user.name[0] }}</div>
+            <a href="{{ url_for('get_movies', user_id=user.id) }}">
+                <div class="user-avatar">{{ user.name[0] }}</div>
             </a>
-            <a href="{{ url_for('get_movies', user_id=user.id) }}" class="btn">{{ user.name }}</a>
-
+            <a href="{{ url_for('get_movies', user_id=user.id) }}">{{ user.name }}</a>
             <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST">
                 <button type="submit">Diesen Nutzer löschen</button>
             </form>
         </div>
         {% endfor %}
+    {% else %}
+        <p class="empty-hint">Noch keine Nutzer vorhanden – füge oben einen hinzu!</p>
+    {% endif %}
+</div>
     </div>
-
-    {% endblock %}
+</div>
+{% endblock %}

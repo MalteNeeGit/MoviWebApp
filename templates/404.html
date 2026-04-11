@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>404 - Seite nicht gefunden</h1>
-    <p>Der gesuchte Film existiert nicht!</p>
-    <a href="{{ url_for('get_movies', user_id=user_id) }}">Zurück zu deinen Filmen</a>
+<div class="error-page">
+    <div class="error-overlay"></div>
+    <div class="error-content">
+        <h1>404</h1>
+        <h2>Seite nicht gefunden</h2>
+        <p>Diese Seite existiert nicht oder wurde gelöscht</p>
+        <a href="{{ url_for('home') }}">← Zurück zur Startseite</a>
+    </div>
+</div>
 {% endblock %}
