@@ -112,11 +112,3 @@ Die App ist deployed auf **PythonAnywhere**:
 🔗 [MalteMasterschoolProject.pythonanywhere.com](https://MalteMasterschoolProject.pythonanywhere.com)
 
 ---
-
-## 👨‍💻 Autor
-
-**Malte** – Entwickelt im Rahmen des Masterschool Python Kurses.
-
----
-
-*Made with ❤️ and a lot of Flask*
